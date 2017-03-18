@@ -15,7 +15,6 @@ def getConnection():
 	conn = psycopg2.connect(connenction_string)
 	return conn
 
-
 # Format a query result (a list of tuples) to a JSON string
 # @rows: a list of sql results in tuples
 # @fields: a list of column names
@@ -282,7 +281,8 @@ def program(request):
 				fields = ['scheduleID', 'stationID', 'programID', 'airDateTime', 'duration', 'ratingID', 'isNew']
 				cur.execute("SELECT {} FROM schedule WHERE  programid IN (SELECT programid from program WHERE showid IN (select showid from show where title={}))".format(",".join(fields),caseListCondition[0]))
 			else:
-				cur.execute(" Select title FROM show where {} = \'{}\' AND {} = \'{}\'".format(caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
+				fields = ['showID', 'title', 'originalAirDate', 'showType', 'ratingID', 'language']
+				cur.execute(" Select {} FROM show where {} = \'{}\' AND {} = \'{}\'".format(",".join(fields), caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
 			result = cur.fetchall()
 			return Response(result, status=status.HTTP_200_OK)
 		except psycopg2.ProgrammingError as exc:
