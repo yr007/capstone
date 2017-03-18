@@ -279,9 +279,8 @@ def program(request):
 			#cur.execute(" Select showname FROM shows where \'{}\' = \'{}\' AND \'{}\' = \'{}\'".format(caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
 			#print(" Select title FROM show where {} = \'{}\' AND {} = \'{}\'".format(caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
 			#cur.execute(" Select title FROM show where {} = \'{}\' AND {} = \'{}\'".format(caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
-				#cur.execute("SELECT scheduleid, airdatetime, duration FROM schedule WHERE  programid IN (SELECT programid from program WHERE showid IN (select showid from show where title={}))".format(caseListCondition[0]));
-				cur.execute("SELECT * FROM schedule WHERE  programid IN (SELECT programid from program WHERE showid IN (select showid from show where title={}))".format(caseListCondition[0]));
-	
+				fields = ['scheduleID', 'stationID', 'programID', 'airDateTime', 'duration', 'ratingID', 'isNew']
+				cur.execute("SELECT {} FROM schedule WHERE  programid IN (SELECT programid from program WHERE showid IN (select showid from show where title={}))".format(",".join(fields),caseListCondition[0]))
 			else:
 				cur.execute(" Select title FROM show where {} = \'{}\' AND {} = \'{}\'".format(caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
 			result = cur.fetchall()
