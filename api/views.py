@@ -284,7 +284,7 @@ def program(request):
 				fields = ['showID', 'title', 'originalAirDate', 'showType', 'ratingID', 'language']
 				cur.execute(" Select {} FROM show where {} = \'{}\' AND {} = \'{}\'".format(",".join(fields), caseListColumn[0], caseListCondition[0], caseListColumn[1], caseListCondition[1]))
 			result = cur.fetchall()
-			return Response(result, status=status.HTTP_200_OK)
+			return Response(format(result,fields), status=status.HTTP_200_OK)
 		except psycopg2.ProgrammingError as exc:
 			print(exc)
 			return Response(status=HTTP_400_BAD_REQUEST)
